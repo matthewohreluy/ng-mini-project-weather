@@ -1,0 +1,20 @@
+<div class="tab-group">
+    <div class="tab-header">
+        @if(tabs.length > 0){
+            <ul>
+                @for(tabName of tabs;let i = $index; track i;  ){
+                    <li 
+                    [class.active]="i===activeTabIndex"
+                     class="tab-item-header"
+                     (click)="onSelectTab(i)">
+                        <span>{{tabName}}</span> <a
+                        (click)="onCloseTab(i)" href="javascript:void(0)" >X</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <div class="tab-content">
+      <ng-content></ng-content>
+    </div>
+</div>

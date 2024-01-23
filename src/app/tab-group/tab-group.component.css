@@ -1,0 +1,35 @@
+.tab-group{
+    .tab-header{
+        ul{
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0;
+            list-style-type: none;
+            margin: 0;
+            li{
+                padding: 10px;
+                background: rgb(97,122,160);
+                color: #fff;
+                margin-right: 5px;
+                border: 1px solid black;
+                &.active{
+                    background-color: #f5f5f5;
+                    color: black;
+                    font-weight: bold;
+                }
+                &:hover{
+                    cursor: pointer;
+                }
+                span{
+                    margin-right: 20px;
+                }
+                a{
+                    color: #fff;
+                    &:hover{
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+    }
+}

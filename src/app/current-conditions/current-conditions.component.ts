@@ -1,22 +1,27 @@
-import {Component, inject, Signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, Signal} from '@angular/core';
 import {WeatherService} from "../weather.service";
 import {LocationService} from "../location.service";
-import {Router} from "@angular/router";
 import {ConditionsAndZip} from '../conditions-and-zip.type';
 
 @Component({
   selector: 'app-current-conditions',
   templateUrl: './current-conditions.component.html',
-  styleUrls: ['./current-conditions.component.css']
+  styleUrls: ['./current-conditions.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CurrentConditionsComponent {
 
   private weatherService = inject(WeatherService);
-  private router = inject(Router);
   protected locationService = inject(LocationService);
   protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
+  activeTabIndex: number = 0;
 
-  showForecast(zipcode : string){
-    this.router.navigate(['/forecast', zipcode])
+  getTabs(){
+   return this.currentConditionsByZip().map(condition=> `${condition.data.name} (${condition.zip})`)
   }
+
+  closeTab(index: number){
+    this.locationService.removeLocation(this.currentConditionsByZip()[index].zip)
+  }
+
 }
