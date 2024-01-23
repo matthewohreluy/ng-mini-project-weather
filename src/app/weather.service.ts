@@ -6,12 +6,13 @@ import {HttpClient} from '@angular/common/http';
 import {CurrentConditions} from './current-conditions/current-conditions.type';
 import {ConditionsAndZip} from './conditions-and-zip.type';
 import {Forecast} from './forecasts-list/forecast.type';
-import { LocationService } from './location.service';
+import { LOCATIONS, LocationService } from './location.service';
 import { compareArrays } from './helper';
-import { StorageService } from './storage.service';
+import { CachingService } from './caching.service';
 import { ForecastsAndZip } from './forecasts-and-zip.type';
 
 export const CONDITIONS : string = "conditions";
+export const FORECASTS : string = "forecasts"
 
 @Injectable()
 export class WeatherService implements OnDestroy {
@@ -25,16 +26,14 @@ export class WeatherService implements OnDestroy {
   constructor(
     private http: HttpClient, 
     private locationService: LocationService,
-    private storageService: StorageService) { 
+    private cachingService: CachingService) { 
+    // this.getCurrentConditionsFromCache()
+    // this.getForecastsFromCache()
     this.subscription.add(this.locationService.locations$
       .pipe(
-        switchMap((locations: string[])=>{
-          const addArray = compareArrays(locations, this.currentConditions().map(location=> location.zip));
-          const removeArray = compareArrays(this.currentConditions().map(location=> location.zip),locations);
-          if(addArray.length > 0 ) return from(addArray).pipe(mergeMap(data=>this.addCurrentConditions(data)));
-          else if(removeArray.length > 0) return from(removeArray).pipe(mergeMap(data=>this.removeCurrentConditions(data)));
-          return of(null);
-        }),
+
+        switchMap((locations: string[])=>from(locations)),
+        mergeMap(data=>this.addCurrentConditions(data))
       )
       .subscribe())
   }
@@ -43,12 +42,29 @@ export class WeatherService implements OnDestroy {
       this.subscription.unsubscribe();
   }
 
+  getCurrentConditionsFromCache(){
+    let conditionsData = this.cachingService.get<ConditionsAndZip[]>(CONDITIONS);
+    if (conditionsData){
+      this.currentConditions.update(conditions => {return [...conditionsData,...conditions]})
+      console.log(this.currentConditions());
+    }
+  }
+
+  getForecastsFromCache(){
+    let forecastData = this.cachingService.get<ForecastsAndZip[]>(FORECASTS);
+    if (forecastData){
+      this.fiveDayForecasts.update(forecast => {return [...forecastData,...forecast]})
+      console.log(this.fiveDayForecasts());
+    }
+  }
+
   addCurrentConditions(zipcode: string):Observable<CurrentConditions> {
     return this.http.get<CurrentConditions>(`${WeatherService.URL}/weather?zip=${zipcode},us&units=imperial&APPID=${WeatherService.APPID}`)
       .pipe(
         tap(data => {
-          this.currentConditions.update(conditions => [...conditions, {zip: zipcode, data}]);
-          this.storageService.set<ConditionsAndZip[]>(CONDITIONS,this.currentConditions())
+          this.currentConditions.update(conditions => [...conditions, {zip: zipcode, data, timeStamp: this.cachingService.getMillisecondsNow()}]);
+          console.log(this.currentConditions());
+          this.cachingService.set<ConditionsAndZip[]>(CONDITIONS,this.currentConditions())
         }),
         catchError((error)=>{
           this.locationService.removeLocation(zipcode);
@@ -67,7 +83,7 @@ export class WeatherService implements OnDestroy {
       }
       return conditions;
       })
-    ).pipe(tap(()=>this.storageService.set<ConditionsAndZip[]>(CONDITIONS,this.currentConditions())))
+    ).pipe(tap(()=>this.cachingService.set<ConditionsAndZip[]>(CONDITIONS,this.currentConditions())))
   }
 
   getCurrentConditions(): Signal<ConditionsAndZip[]> {
@@ -75,7 +91,18 @@ export class WeatherService implements OnDestroy {
   }
 
   getForecast(zipcode: string): Observable<Forecast> {
-    return this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`);
+    return this.http.get<Forecast>(`${WeatherService.URL}/forecast/daily?zip=${zipcode},us&units=imperial&cnt=5&APPID=${WeatherService.APPID}`)
+    .pipe(
+      tap(data => {
+        this.fiveDayForecasts.update(fiveDayForecasts => [...fiveDayForecasts, {zip: zipcode, data, timeStamp: this.cachingService.getMillisecondsNow()}]);
+        this.cachingService.set<ForecastsAndZip[]>(FORECASTS,this.fiveDayForecasts())
+      }),
+      catchError((error)=>{
+        this.locationService.removeLocation(zipcode);
+        alert('Unable to fetch zipcode');
+        return throwError(error);
+      })
+    )
   }
 
   getWeatherIcon(id): string {

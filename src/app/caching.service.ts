@@ -3,8 +3,12 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root'
 })
-export class StorageService{
-    refetchInterval = 3000;
+export class CachingService{
+    private readonly refetchInterval = 600; //seconds
+
+    private get refetchIntervalInMS(){
+        return this.refetchInterval * 1000;
+    }
 
     get<T>(key: string): T{
         try {
@@ -28,4 +32,15 @@ export class StorageService{
         localStorage.removeItem(key);
     }
 
+
+    getMillisecondsNow(): number{
+        const currentDate = new Date();
+        return currentDate.getTime();
+    }
+
+    shouldRefetchData(timeStamp: number): boolean{
+       console.log(this.getMillisecondsNow() - timeStamp);
+       console.log(timeStamp);
+       return this.getMillisecondsNow() - timeStamp  > this.refetchIntervalInMS
+    }
 }

@@ -16,6 +16,9 @@
                     background-color: #f5f5f5;
                     color: black;
                     font-weight: bold;
+                    a{
+                        color: black;
+                    }
                 }
                 &:hover{
                     cursor: pointer;
