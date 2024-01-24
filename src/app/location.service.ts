@@ -24,7 +24,6 @@ export class LocationService {
 
   addLocation(zipcode : string) {
     this.locations.push(zipcode);
-    console.log(this.locations);
     this.updateLocationSubject();
   }
 

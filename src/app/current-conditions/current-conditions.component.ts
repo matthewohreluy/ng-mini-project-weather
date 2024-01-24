@@ -9,12 +9,13 @@ import {ConditionsAndZip} from '../conditions-and-zip.type';
   styleUrls: ['./current-conditions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CurrentConditionsComponent {
+export class CurrentConditionsComponent{
 
   private weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
   protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
   activeTabIndex: number = 0;
+  
 
   getTabs(){
    return this.currentConditionsByZip().map(condition=> `${condition.data.name} (${condition.zip})`)

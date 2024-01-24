@@ -14,6 +14,7 @@ export class TabGroupComponent{
 
     onCloseTab(i){
         this.closeTab.emit(i);
+        this.onSelectTab(i-1);
     }
 
     onSelectTab(i: number): void{

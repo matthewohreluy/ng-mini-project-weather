@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
     providedIn: 'root'
 })
 export class CachingService{
-    private readonly refetchInterval = 600; //seconds
+    private readonly refetchInterval = 10; //seconds
 
     private get refetchIntervalInMS(){
         return this.refetchInterval * 1000;
@@ -39,8 +39,6 @@ export class CachingService{
     }
 
     shouldRefetchData(timeStamp: number): boolean{
-       console.log(this.getMillisecondsNow() - timeStamp);
-       console.log(timeStamp);
        return this.getMillisecondsNow() - timeStamp  > this.refetchIntervalInMS
     }
 }
