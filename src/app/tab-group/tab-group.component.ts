@@ -17,7 +17,7 @@ export class TabGroupComponent<T>{
     /** @param closeTabFn - optional side effect function when user closes a tab */
     @Input() closeTabFn: (...args: any[])=>void;
     /** @param contentTemplate - Template reference to be used to show the contents of the tab */
-    @Input() contentTemplate: TemplateRef<T>;
+    @Input() contentTemplate: TemplateRef<{ $implicit: T }>;
 
     activeTabIndex: number = 0;
 
