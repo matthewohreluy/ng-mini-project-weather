@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
     providedIn: 'root'
 })
 export class CachingService{
-    private readonly refetchInterval = 10; //seconds
+    private readonly refetchInterval = 2 * (60*60); //using seconds, the 2 is hours multiplied by minutes and seconds
 
     private get refetchIntervalInMS(){
         return this.refetchInterval * 1000;
