@@ -1,8 +1,8 @@
 <div class="tab-group">
     <div class="tab-header">
-        @if(tabs.length > 0){
+        @if(tabNames.length > 0){
             <ul>
-                @for(tabName of tabs;let i = $index; track i;  ){
+                @for(tabName of tabNames;let i = $index; track i;  ){
                     <li 
                     [class.active]="i===activeTabIndex"
                      class="tab-item-header"
@@ -15,6 +15,13 @@
         }
     </div>
     <div class="tab-content">
-      <ng-content></ng-content>
+        @for(tabContent of tabContents; track $index){
+            <app-tab-item [activeTabIndex]="activeTabIndex" [index]="$index">
+                <ng-container 
+                [ngTemplateOutlet]="contentTemplate"
+                [ngTemplateOutletContext]="{$implicit: tabContent}"
+                ></ng-container>
+            </app-tab-item>
+        }
     </div>
 </div>

@@ -14,15 +14,11 @@ export class CurrentConditionsComponent{
   private weatherService = inject(WeatherService);
   protected locationService = inject(LocationService);
   protected currentConditionsByZip: Signal<ConditionsAndZip[]> = this.weatherService.getCurrentConditions();
-  activeTabIndex: number = 0;
-  
+  closeTabFn = (index: number) =>{ this.locationService.removeLocation(this.currentConditionsByZip()[index].zip)}
+
 
   getTabs(){
    return this.currentConditionsByZip().map(condition=> `${condition.data.name} (${condition.zip})`)
-  }
-
-  closeTab(index: number){
-    this.locationService.removeLocation(this.currentConditionsByZip()[index].zip)
   }
 
 }

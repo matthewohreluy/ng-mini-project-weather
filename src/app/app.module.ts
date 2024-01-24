@@ -31,7 +31,6 @@ import { TabItemComponent } from './tab-group/tab-item/tab-item.component';
     HttpClientModule,
     RouterModule,
     TabGroupComponent,
-    TabItemComponent,
     routing,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
