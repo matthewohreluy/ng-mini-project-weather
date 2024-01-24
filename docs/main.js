@@ -49,9 +49,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   AppModule: () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/platform-browser */ 6480);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/core */ 1699);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/forms */ 8849);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/platform-browser */ 6480);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/core */ 1699);
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @angular/forms */ 8849);
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app.component */ 6401);
 /* harmony import */ var _zipcode_entry_zipcode_entry_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./zipcode-entry/zipcode-entry.component */ 1402);
 /* harmony import */ var _location_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./location.service */ 4056);
@@ -59,13 +59,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _weather_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./weather.service */ 8986);
 /* harmony import */ var _current_conditions_current_conditions_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./current-conditions/current-conditions.component */ 1217);
 /* harmony import */ var _main_page_main_page_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./main-page/main-page.component */ 1152);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/router */ 7947);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/router */ 7947);
 /* harmony import */ var _app_routing__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./app.routing */ 34);
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @angular/common/http */ 4860);
-/* harmony import */ var _angular_service_worker__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/service-worker */ 1509);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @angular/common/http */ 4860);
+/* harmony import */ var _angular_service_worker__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @angular/service-worker */ 1509);
 /* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../environments/environment */ 553);
 /* harmony import */ var _tab_group_tab_group_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./tab-group/tab-group.component */ 2237);
-/* harmony import */ var _tab_group_tab_item_tab_item_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./tab-group/tab-item/tab-item.component */ 388);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -89,11 +88,10 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
-
 let AppModule = class AppModule {};
-AppModule = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_11__.NgModule)({
+AppModule = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_10__.NgModule)({
   declarations: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent, _zipcode_entry_zipcode_entry_component__WEBPACK_IMPORTED_MODULE_1__.ZipcodeEntryComponent, _forecasts_list_forecasts_list_component__WEBPACK_IMPORTED_MODULE_3__.ForecastsListComponent, _current_conditions_current_conditions_component__WEBPACK_IMPORTED_MODULE_5__.CurrentConditionsComponent, _main_page_main_page_component__WEBPACK_IMPORTED_MODULE_6__.MainPageComponent],
-  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_12__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_13__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_14__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_15__.RouterModule, _tab_group_tab_group_component__WEBPACK_IMPORTED_MODULE_9__.TabGroupComponent, _tab_group_tab_item_tab_item_component__WEBPACK_IMPORTED_MODULE_10__.TabItemComponent, _app_routing__WEBPACK_IMPORTED_MODULE_7__.routing, _angular_service_worker__WEBPACK_IMPORTED_MODULE_16__.ServiceWorkerModule.register('/ngsw-worker.js', {
+  imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_11__.BrowserModule, _angular_forms__WEBPACK_IMPORTED_MODULE_12__.FormsModule, _angular_common_http__WEBPACK_IMPORTED_MODULE_13__.HttpClientModule, _angular_router__WEBPACK_IMPORTED_MODULE_14__.RouterModule, _tab_group_tab_group_component__WEBPACK_IMPORTED_MODULE_9__.TabGroupComponent, _app_routing__WEBPACK_IMPORTED_MODULE_7__.routing, _angular_service_worker__WEBPACK_IMPORTED_MODULE_15__.ServiceWorkerModule.register('/ngsw-worker.js', {
     enabled: _environments_environment__WEBPACK_IMPORTED_MODULE_8__.environment.production
   })],
   providers: [_location_service__WEBPACK_IMPORTED_MODULE_2__.LocationService, _weather_service__WEBPACK_IMPORTED_MODULE_4__.WeatherService],
@@ -227,13 +225,12 @@ let CurrentConditionsComponent = class CurrentConditionsComponent {
     this.weatherService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_weather_service__WEBPACK_IMPORTED_MODULE_2__.WeatherService);
     this.locationService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.inject)(_location_service__WEBPACK_IMPORTED_MODULE_3__.LocationService);
     this.currentConditionsByZip = this.weatherService.getCurrentConditions();
-    this.activeTabIndex = 0;
+    this.closeTabFn = index => {
+      this.locationService.removeLocation(this.currentConditionsByZip()[index].zip);
+    };
   }
   getTabs() {
     return this.currentConditionsByZip().map(condition => `${condition.data.name} (${condition.zip})`);
-  }
-  closeTab(index) {
-    this.locationService.removeLocation(this.currentConditionsByZip()[index].zip);
   }
 };
 CurrentConditionsComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
@@ -420,7 +417,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tab_group_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./tab-group.component.html?ngResource */ 8576);
 /* harmony import */ var _tab_group_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tab-group.component.css?ngResource */ 5549);
 /* harmony import */ var _tab_group_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_tab_group_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 1699);
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/common */ 6575);
+/* harmony import */ var _tab_item_tab_item_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tab-item/tab-item.component */ 388);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 1699);
 var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
   var c = arguments.length,
     r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -431,39 +430,40 @@ var __decorate = undefined && undefined.__decorate || function (decorators, targ
 
 
 
+
+
 let TabGroupComponent = class TabGroupComponent {
   constructor() {
-    this.tabs = [];
-    this.closeTab = new _angular_core__WEBPACK_IMPORTED_MODULE_2__.EventEmitter();
+    this.tabNames = [];
+    this.tabContents = [];
     this.activeTabIndex = 0;
-    this.activeTabIndexChange = new _angular_core__WEBPACK_IMPORTED_MODULE_2__.EventEmitter();
   }
   onCloseTab(i) {
-    this.closeTab.emit(i);
+    if (this.closeTabFn !== undefined) this.closeTabFn(i);
     this.onSelectTab(i - 1);
   }
   onSelectTab(i) {
     this.activeTabIndex = i;
-    this.activeTabIndexChange.emit(this.activeTabIndex);
   }
   static #_ = this.propDecorators = {
-    tabs: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
+    tabNames: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
     }],
-    closeTab: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Output
+    tabContents: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
     }],
-    activeTabIndex: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input
+    closeTabFn: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
     }],
-    activeTabIndexChange: [{
-      type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Output
+    contentTemplate: [{
+      type: _angular_core__WEBPACK_IMPORTED_MODULE_3__.Input
     }]
   };
 };
-TabGroupComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Component)({
+TabGroupComponent = __decorate([(0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
   selector: 'app-tab-group',
   template: _tab_group_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+  imports: [_tab_item_tab_item_component__WEBPACK_IMPORTED_MODULE_2__.TabItemComponent, _angular_common__WEBPACK_IMPORTED_MODULE_4__.CommonModule],
   standalone: true,
   styles: [(_tab_group_component_css_ngResource__WEBPACK_IMPORTED_MODULE_1___default())]
 })], TabGroupComponent);
@@ -956,7 +956,7 @@ module.exports = "<router-outlet></router-outlet>\r\n";
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<app-tab-group [tabs]=\"getTabs()\" (closeTab)=\"closeTab($event)\" [(activeTabIndex)]=\"activeTabIndex\">\r\n  <app-tab-item  *ngFor=\"let location of currentConditionsByZip();let i = index\" [index]=\"i\" [activeTabIndex]=\"activeTabIndex\">\r\n    <div class=\"well flex\">\r\n      <div>\r\n        <h4>Current conditions: {{location.data.weather[0].main}}</h4>\r\n        <h4>Temperatures today:</h4>\r\n        <p>\r\n          Current {{location.data.main.temp | number:'.0-0'}}\r\n          - Max {{location.data.main.temp_max | number:'.0-0'}}\r\n          - Min {{location.data.main.temp_min | number:'.0-0'}}\r\n        </p>\r\n        <p>\r\n          <a [routerLink]=\"['/forecast', location.zip]\" >Show 5-day forecast for {{location.data.name}}</a>\r\n        </p>\r\n      </div>\r\n      <div>\r\n        <img [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\">\r\n      </div>\r\n   </div>\r\n  </app-tab-item>\r\n  \r\n</app-tab-group>\r\n";
+module.exports = "<app-tab-group \r\n[tabNames]=\"getTabs()\" \r\n[tabContents]=\"currentConditionsByZip()\" \r\n[closeTabFn]=\"closeTabFn\" \r\n[contentTemplate]=\"tabTemplate\"/>\r\n\r\n\r\n<!-- can use any template -->\r\n<ng-template #tabTemplate let-location>\r\n  <div class=\"well flex\">\r\n    <div>\r\n      <h4>Current conditions: {{location.data.weather[0].main}}</h4>\r\n      <h4>Temperatures today:</h4>\r\n      <p>\r\n        Current {{location.data.main.temp | number:'.0-0'}}\r\n        - Max {{location.data.main.temp_max | number:'.0-0'}}\r\n        - Min {{location.data.main.temp_min | number:'.0-0'}}\r\n      </p>\r\n      <p>\r\n        <a [routerLink]=\"['/forecast', location.zip]\" >Show 5-day forecast for {{location.data.name}}</a>\r\n      </p>\r\n    </div>\r\n    <div>\r\n      <img [src]=\"weatherService.getWeatherIcon(location.data.weather[0].id)\">\r\n    </div>\r\n  </div>\r\n</ng-template>";
 
 /***/ }),
 
@@ -989,7 +989,7 @@ module.exports = "<div class=\"container-fluid\">\r\n\r\n  <app-zipcode-entry> <
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"tab-group\">\r\n    <div class=\"tab-header\">\r\n        @if(tabs.length > 0){\r\n            <ul>\r\n                @for(tabName of tabs;let i = $index; track i;  ){\r\n                    <li \r\n                    [class.active]=\"i===activeTabIndex\"\r\n                     class=\"tab-item-header\"\r\n                     (click)=\"onSelectTab(i)\">\r\n                        <span>{{tabName}}</span> <a\r\n                        (click)=\"onCloseTab(i)\" href=\"javascript:void(0)\" >X</a>\r\n                    </li>\r\n                }\r\n            </ul>\r\n        }\r\n    </div>\r\n    <div class=\"tab-content\">\r\n      <ng-content></ng-content>\r\n    </div>\r\n</div>";
+module.exports = "<div class=\"tab-group\">\r\n    <div class=\"tab-header\">\r\n        @if(tabNames.length > 0){\r\n            <ul>\r\n                @for(tabName of tabNames;let i = $index; track i;  ){\r\n                    <li \r\n                    [class.active]=\"i===activeTabIndex\"\r\n                     class=\"tab-item-header\"\r\n                     (click)=\"onSelectTab(i)\">\r\n                        <span>{{tabName}}</span> <a\r\n                        (click)=\"onCloseTab(i)\" href=\"javascript:void(0)\" >X</a>\r\n                    </li>\r\n                }\r\n            </ul>\r\n        }\r\n    </div>\r\n    <div class=\"tab-content\">\r\n        @for(tabContent of tabContents; track $index){\r\n            <app-tab-item [activeTabIndex]=\"activeTabIndex\" [index]=\"$index\">\r\n                <ng-container \r\n                [ngTemplateOutlet]=\"contentTemplate\"\r\n                [ngTemplateOutletContext]=\"{$implicit: tabContent}\"\r\n                ></ng-container>\r\n            </app-tab-item>\r\n        }\r\n    </div>\r\n</div>";
 
 /***/ }),
 
